@@ -123,27 +123,34 @@ int main(void) {
 
 	jjuggumi_init();
 	
-	//intro();
+	intro();
 	//sample();
-	/*system("cls");
+	
+	system("cls");
 	system("pause");
 	char message_mugunghwa[] = "mugunghwa game";
 	dialog(message_mugunghwa);
 	mugunghwa();
 	if (n_alive == 1) {
 		ending();
-	}*/
+	}
+	
 	//nightgame();
+	
 	system("cls");
 	system("pause");
 	char message_jul[] = "juldarigi game";
 	dialog(message_jul);
 	juldarigi();
+	if (n_alive == 1) {
+		ending();
+	}
+	
 	system("cls");
 	system("pause");
 	char message_jebi[] = "jebi game";
 	dialog(message_jebi);
-	//jebi();
+	jebi();
 	ending();
 	return 0;
 
