@@ -168,6 +168,9 @@ int winneris() {
 	return 0;
 }
 void jebi() {
+	for (int i = 0; i < n_player; i++) {
+		win[i] = false;
+	}
 	set_jebi();
 	while (1) {
 		int nt = n_alive;
@@ -177,7 +180,7 @@ void jebi() {
 			if (key == K_QUIT) {
 				break;
 			}
-			else if (key != K_UNDEFINED && player[0].is_alive == true && win[0] == false) {
+			else if (key != K_UNDEFINED && player[0].is_alive == true) {
 				player_pick(key, 0);
 			}
 		}
