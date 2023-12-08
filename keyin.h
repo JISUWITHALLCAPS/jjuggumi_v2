@@ -1,12 +1,12 @@
 #ifndef _KEYIN_H_
 #define _KEYIN_H_
 
-// ÀÔ·Â ¹Ş´Â Å° Á¾·ù
-// Å°¸¦ Ãß°¡/¼öÁ¤ÇÒ °æ¿ì N_KEY¿Í,
-// keyin.c:is_valid():key_list[]µµ ÇÔ²² ¼öÁ¤ÇØ¾ß ÇÔ
-#define N_KEY		7  // K_UNDEFINED ¸¦ »« Å° Á¾·ù
+// ì…ë ¥ ë°›ëŠ” í‚¤ ì¢…ë¥˜
+// í‚¤ë¥¼ ì¶”ê°€/ìˆ˜ì •í•  ê²½ìš° N_KEYì™€,
+// keyin.c:is_valid():key_list[]ë„ í•¨ê»˜ ìˆ˜ì •í•´ì•¼ í•¨
+#define N_KEY		11  // K_UNDEFINED ë¥¼ ëº€ í‚¤ ì¢…ë¥˜
 
-// Âü°í: #define ´ë½Å enum ±¸¹®À¸·Îµµ ±¸Çö °¡´É
+// ì°¸ê³ : #define ëŒ€ì‹  enum êµ¬ë¬¸ìœ¼ë¡œë„ êµ¬í˜„ ê°€ëŠ¥
 #define K_ARROW		224
 #define K_UP		72
 #define K_DOWN		80
