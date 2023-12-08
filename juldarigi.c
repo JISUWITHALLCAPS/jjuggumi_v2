@@ -261,9 +261,9 @@ void juldarigi() {
 			oneSecPull(str);
 		}
 		else if (tick % 2000 == 0) {
-			gotoxy(6, 0);
+			gotoxy(5, 0);
 			printf("                           ");
-			gotoxy(6, 0);
+			gotoxy(5, 0);
 			int cnt = 0;
 			for (int i = 0; i < n_player; i++) {
 				if (jul_player[i] != jul_player2[i]) {
