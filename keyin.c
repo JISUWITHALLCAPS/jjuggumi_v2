@@ -14,10 +14,9 @@ bool is_valid(key_t key) {
 		K_SPACE,
 		K_PULL_L,	
 		K_PULL_R,	
-		K_LIEDOWN_L,	
+		K_LIEDOWN_L,
 		K_LIEDOWN_R	
 	};
-
 	for (int i = 0; i < N_KEY; i++) {
 		if (key_list[i] == key) {
 			return true;
