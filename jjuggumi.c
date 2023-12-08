@@ -122,7 +122,7 @@ void ending(void) // 확실한지?
 int main(void) {
 
 	jjuggumi_init();
-	//intro();
+	intro();
 	//sample();
 
 	//무궁화
@@ -131,10 +131,6 @@ int main(void) {
 	char message_mugunghwa[] = "mugunghwa game";
 	dialog(message_mugunghwa);
 	mugunghwa();
-	if (n_alive == 1) {
-		ending();
-	}
-
 	//야간운동
 	/*system("cls");
 	system("pause");
