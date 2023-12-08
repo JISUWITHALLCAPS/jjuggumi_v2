@@ -122,10 +122,10 @@ void ending(void) // 확실한지?
 int main(void) {
 
 	jjuggumi_init();
-	
-	intro();
+	//intro();
 	//sample();
-	
+
+	//무궁화
 	system("cls");
 	system("pause");
 	char message_mugunghwa[] = "mugunghwa game";
@@ -134,24 +134,30 @@ int main(void) {
 	if (n_alive == 1) {
 		ending();
 	}
-	
-	//nightgame();
-	
+
+	//야간운동
+	/*system("cls");
+	system("pause");
+	char message_night[] = "night game";
+	dialog(message_mugunghwa);
+	nightgame();*/
+
+	//줄다리기
 	system("cls");
 	system("pause");
 	char message_jul[] = "juldarigi game";
 	dialog(message_jul);
 	juldarigi();
-	if (n_alive == 1) {
-		ending();
-	}
-	
+
+	//제비뽑기
 	system("cls");
 	system("pause");
 	char message_jebi[] = "jebi game";
 	dialog(message_jebi);
 	jebi();
+	
 	ending();
+
 	return 0;
 
 }
