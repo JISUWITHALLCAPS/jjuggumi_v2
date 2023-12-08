@@ -44,10 +44,9 @@ int tick;  // Ω√∞Ë
 // πÃ¥œ∞‘¿”
 
 //void sample(void);
-//void mugunghwa(void);
 void mugunghwa(void);
-//void nightgame(void);
-//void juldarigi(void);
+void nightgame(void);
+void juldarigi(void);
 void jebi(void);
 
 int randint(int low, int high);
