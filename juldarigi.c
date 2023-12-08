@@ -280,4 +280,10 @@ void juldarigi() {
 		print_stat_jul();
 		Sleep(10);
 	}
+	n_alive = 0;
+	for (int i = 0; i < n_player; i++) {
+		if (player[i].is_alive == true) {
+			n_alive++;
+		}
+	}
 }
