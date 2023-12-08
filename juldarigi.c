@@ -1,25 +1,26 @@
-#include <stdio.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include "keyin.h"
 #include "jjuggumi.h"
 #include "canvas.h"
-#include "keyin.h"
+#include <stdio.h>
 #include <string.h>
 
+int tick = 0, w = 2;
 double str;
-int tick = 0,w = 2;
+bool jul_player[PLAYER_MAX],jul_player2[PLAYER_MAX];
 void print_stat_jul(void);
+
 void wins(int n) {
-	int i = n;
-	if (player[i].is_alive == false) {
-		player[i].is_alive = true;
+	if (player[n].is_alive == false) {
+		player[n].is_alive = true;
 	}
 }
 void lose(int n) {
-	int i = n;
-	if (player[i].is_alive == true) {
-		player[i].hasitem = false;
-		memset(&player[p].item, 0, sizeof(ITEM));
-		player[i].str /= 2;
-		player[i].intel /= 2;
+	if (player[n].is_alive == true) {
+		player[n].hasitem = false;
+		memset(&player[n].item, 0, sizeof(ITEM));
+		player[n].str /= 2;
+		player[n].intel /= 2;
 		return;
 	}
 	n_alive--;
@@ -46,12 +47,12 @@ double cal_str() {
 	double str = 0;
 	for (int i = 0; i < n_player; i++) {
 		if (i % 2 == 0) {
-			if (player_copy[i]) {
+			if (player_copy[i] == true) {
 				str -= player[i].str;
 			}
 		}
 		else {
-			if (player_copy[i]) {
+			if (player_copy[i] == true) {
 				str += player[i].str;
 			}
 		}
@@ -62,7 +63,7 @@ double cal_str() {
 void wakeup_str(int t) {
 	for (int i = 0; i < n_player; i++) {
 		if (i % 2 == t) {
-			if (player_copy[i]) {
+			if (player_copy[i] == true) {
 				player[i].str /= 2;
 			}
 		}
@@ -70,12 +71,13 @@ void wakeup_str(int t) {
 }
 
 void cal_str_lie_down(int t) {
-	for (int i = 0; i < n_player; i++)
+	for (int i = 0; i < n_player; i++) {
 		if (i % 2 == t) {
-			if (player_copy[i]) {
+			if (player_copy[i] == true) {
 				player[i].str *= 2;
 			}
 		}
+	}
 }
 
 bool pull_right() {
@@ -86,11 +88,12 @@ bool pull_right() {
 		if (back_buf[1][i] != ' ') {
 			player_copy[back_buf[1][i] - '0'] = false;
 			lose(back_buf[1][i] - '0');
+
 		}
 		else {
-			for (int i = 0; i < n_player; i++) {
-				if (player_copy[i] == true) {
-					wins(i);
+			for (int j = 0; j < n_player; j++) {
+				if (player_copy[j] == true) {
+					wins(j);
 				}
 			}
 			return true;
@@ -101,14 +104,15 @@ bool pull_right() {
 		}
 	}
 	else {
-		for (int i = 0; i < 27; i++) {
-			arr[i] = back_buf[1][i + 1];
+		for (int j = 0; j < 27; j++) {
+			arr[j] = back_buf[1][j + 1];
 		}
 
-		for (int i = 0; i < 26; i++) {
-			back_buf[1][i + 2] = arr[i];
+		for (int j = 0; j < 26; j++) {
+			back_buf[1][j + 2] = arr[j];
 		}
 	}
+	memcpy(jul_player2, player_copy, sizeof(player_copy));
 	return false;
 }
 
@@ -121,9 +125,9 @@ bool pull_left() {
 			lose(back_buf[1][i] - '0');
 		}
 		else {
-			for (int i = 0; i < n_player; i++) {
-				if (player_copy[i] == true) {
-					wins(i);
+			for (int j = 0; j < n_player; j++) {
+				if (player_copy[j] == true) {
+					wins(j);
 				}
 			}
 			return true;
@@ -133,77 +137,23 @@ bool pull_left() {
 		}
 	}
 	else {
-		for (int i = 0; i < 27; i++) {
-			arr[i] = back_buf[1][i + 1];
+		for (int j = 0; j < 27; j++) {
+			arr[j] = back_buf[1][j + 1];
 		}
 
-		for (int i = 1; i < 27; i++) {
-			back_buf[1][i] = arr[i];
+		for (int j = 1; j < 27; j++) {
+			back_buf[1][j] = arr[j];
 		}
 	}
+	memcpy(jul_player2, player_copy, sizeof(player_copy));
 	return false;
 }
-
-void when_liedown_r() {
-	gotoxy(4, 0);
-	printf("lie down RIGHT");
-	rLieDownOn = true;
-	cal_str_lie_down(1);
-	str = cal_str();
+void juldarigi_init(int t) {
+	draw_jul();
 	print_stat_jul();
-	if (str < 0) {
-		g = pull_left();
-		g = pull_left();
-	}
-	else {
-		g = pull_right();
-		g = pull_right();
-	}
-
-	for (int i = 0; i < n_player; i++)
-		if (i % 2 == 1) {
-			if (player[i].stamina > 30)
-				player[i].stamina -= 30;
-			else
-				player[i].stamina = 0;
-		}
-	wakeup_str(1);
-}
-void when_liedown_l() {
-	gotoxy(4, 0);
-	printf("lie down LEFT");
-	lLieDownOn = true;
-	cal_str_lie_down(0);
 	str = cal_str();
-	print_stat_jul();
-	if (str < 0) {
-		g = pull_left();
-		g = pull_left();
-	}
-	else {
-		g = pull_right();
-		g = pull_right();
-	}
-	for (int i = 0; i < n_player; i++)
-		if (i % 2 == 0) {
-			if (player[i].stamina > 30) {
-				player[i].stamina -= 30;
-			}
-			else {
-				player[i].stamina = 0;
-			}
-		}
-	wakeup_str(0);
-}
-
-
-void print_stat_jul() {
-	gotoxy(4, 0);
-	printf("str:                        \n");
-	gotoxy(4, 0);
-	printf("str:\t\t%.1f\n", str);
-	gotoxy(5, 0);
-	printf("no. of players left: %d\n", n_alive);
+	gotoxy(6, 0);
+	printf("no. of players left: %d\n", t);
 	for (int i = 0; i < n_player; i++) {
 		printf("player %2d: alive", i);
 		if (player[i].is_alive == false) {
@@ -212,47 +162,121 @@ void print_stat_jul() {
 		printf("\n");
 	}
 }
-
-void juldarigi() {
-	draw_jul();
-	draw();
-	print_stat_jul();
+void lieDownPull(str) {
+	if (str > 0) {
+		g = pull_right();
+		g = pull_right();
+	}
+	else {
+		g = pull_left();
+		g = pull_left();
+	}
+}
+void cal_stam(int n) {
+	for (int i = 0; i < n_player; i++)
+		if (i % 2 == n) {
+			if (player[i].stamina > 30)
+				player[i].stamina -= 30;
+			else
+				player[i].stamina = 0;
+		}
+	wakeup_str(1);
+}
+void when_liedown_r() {
+	rLieDownOn = true;
+	gotoxy(3, 15);
+	printf("lie down RIGHT");
+	cal_str_lie_down(1);
 	str = cal_str();
-	key_t key;
+	print_stat_jul();
+	cal_stam(1);
+	wakeup_str(1);
+}
+void when_liedown_l() {
+	lLieDownOn = true;
+	gotoxy(3, 0);
+	printf("lie down LEFT");
+	cal_str_lie_down(0);
+	str = cal_str();
+	print_stat_jul();
+	lieDownPull(str);
+	cal_stam(0);
+	wakeup_str(0);
+}
+
+void oneSecPull(str) {
+	if (str > 0) {
+		g = pull_right();
+	}
+	else {
+		g = pull_left();
+	}
+	str = cal_str();
+}
+
+
+void print_stat_jul() {
+	draw();
+	gotoxy(4, 0);
+	printf("str:    %.1f\n", str);
+}
+void erase_liedown() {
+	gotoxy(3, 0);
+	printf("                              ");
+}
+void juldarigi() {
+	int temp = n_alive;
+	juldarigi_init(temp);
+	memcpy(jul_player, player_copy, sizeof(player_copy));
+	memcpy(jul_player2, player_copy, sizeof(player_copy));
 	while (g == false) {
 		tick += 10;
-		if (back_buf[1][13] != ' ' && back_buf[1][115] != ' ') {
-			key = get_key();
+		if (back_buf[1][13] != ' ' && back_buf[1][15] != ' ') {
+			key_t key = get_key();
 			if (key == K_QUIT) {
 				break;
 			}
-			switch (key) {
-			case K_PULL_L:str--; break;
-			case K_PULL_R:str++; break;
-			case K_LIEDOWN_L:when_liedown_l(); break;
-			case K_LIEDOWN_R:when_liedown_r(); break;
-			default: break;
+			else if (key == K_LIEDOWN_L) {
+				when_liedown_l();
 			}
-		}
-		if (tick % 1000 == 0) {
-			if (lLieDownOn || rLieDownOn) {
-				draw();
-				print_stat_jul();
-				Sleep(10);
-				lLieDownOn = rLieDownOn = false;
-				continue;
-			}
-
-			if (str < 0) {
-				g = pull_left();
+			else if (key == K_LIEDOWN_R) {
+				when_liedown_r();
 			}
 			else {
-				g = pull_right();
+				switch (key) {
+				case K_PULL_L: str--; break;
+				case K_PULL_R: str++; break;
+				default: break;
+				}
 			}
-			str = cal_str();
 		}
-		;
-		draw();
+		if (tick % 1000 == 0 && tick % 2000 != 0) {
+			if (lLieDownOn || rLieDownOn) {
+				print_stat_jul();
+				lLieDownOn = rLieDownOn = false;
+				Sleep(10);
+				erase_liedown();
+				continue;
+			}
+			oneSecPull(str);
+		}
+		else if (tick % 2000 == 0) {
+			gotoxy(6, 0);
+			printf("                           ");
+			gotoxy(6, 0);
+			int cnt = 0;
+			for (int i = 0; i < n_player; i++) {
+				if (jul_player[i] != jul_player2[i]) {
+					printf("%d, ", i);
+					cnt++;
+				}
+			}
+			if (cnt > 0) {
+				printf("player fall");
+				memcpy(jul_player, jul_player2, sizeof(jul_player2));
+			}
+			cnt = 0;
+		}
 		print_stat_jul();
 		Sleep(10);
 	}
